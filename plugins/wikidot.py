@@ -14,17 +14,18 @@ def tale(inp): #this is for WL use, easily adaptable to SCP
 			if line.lower() in page: #check for first match to input
 				if api.page_exists(page.lower()): #only api call in .tale, verification of page existence
 					try: #must do error handling as the key will be wrong for most of the items
-						rating = item[page]["rating"] 
-						if rating < 0:
-							ratesign = "-"
-						if rating >= 0:
-							ratesign = "+" #adds + or minus sign in front of rating
-						ratestring = "Rating["+ratesign+str(rating)+"]" 
-						author = item[page]["created_by"]
-						authorstring = "Written by "+author
-						title = item[page]["title"]
-						sepstring = ", "
-						return "nonick::"+title+" ("+ratestring+sepstring+authorstring+") - http://wanderers-library.wikidot.com/"+page.lower() #returns the string, nonick:: means that the caller's nick isn't prefixed
+						if "entry" in item[page]["tags"]: #check for tag
+							rating = item[page]["rating"] 
+							if rating < 0:
+								ratesign = "-"
+							if rating >= 0:
+								ratesign = "+" #adds + or minus sign in front of rating
+							ratestring = "Rating["+ratesign+str(rating)+"]" 
+							author = item[page]["created_by"]
+							authorstring = "Written by "+author
+							title = item[page]["title"]
+							sepstring = ", "
+							return "nonick::"+title+" ("+ratestring+sepstring+authorstring+") - http://wanderers-library.wikidot.com/"+page.lower() #returns the string, nonick:: means that the caller's nick isn't prefixed
 					except KeyError:
 						pass 
 				else:
