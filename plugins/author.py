@@ -7,12 +7,13 @@ def author(inp):
 	api = wikidotapi.connection()
 	pages = api.refresh_pages()
 	authpages = []
-	total = 0
+	totalrating = 0
 	pagetotal = 0
+	pagerating = 0
 	author = "None"
 	for page in pages:
 		for item in pagecache: #these two for loops iterate through every item within each page dictionary, the proper syntax for accessing a specific item is item[page][itemname],
-			try:
+			try: 
 				if "entry" in item[page]["tags"]: #makes sure only articles are counted
 					if author != "None":
 						if author == item[page]["created_by"]:
@@ -25,17 +26,13 @@ def author(inp):
 							authpages.append(page)
 							pagetitle = item[page]["title"]
 							pagerating = item[page]["rating"]
-			except KeyError:
+							totalrating += pagerating
+							pagetotal += 1 #all lines above provide page data, math is pretty easy and self-explanatory
+			except KeyError: #must do error handling for code to be valid, iterates through incorrect keys multiple times, do not print things in the except clause, slows down program immensely 
 				pass
-	for page in authpages:
-		rate = api.get_page_item(page,"rating")
-		total += rate
-		pagetotal = pagetotal+1
 	avgrating = 0
-	if pagetotal is not 0:
-		avgrating = total/pagetotal
-	if not authpages:
+	if pagetotal is not 0: #just so no division by zero
+		avgrating = totalrating/pagetotal
+	if not authpages: #if no author pages are added 
 		return "Author not found."
-	#if author == "Pixeltasim":
-		#return "nonick::Fantastic Man"+" has written " + str(pagetotal) + " pages. With an average rating of " + str(avgrating) + ". Their most recent article is " + pagetitle + "(Rating:" + str(pagerating) + ") -http://wanderers-library.wikidot.com/" + authpages[-1].lower()
 	return "nonick::"+ author +" has written " + str(pagetotal) + " pages. They have " + str(total)+ " net upvotes. With an average rating of " + str(avgrating) + ". Their most recent article is " + pagetitle + "(Rating:" + str(pagerating) + ")- http://wanderers-library.wikidot.com/" + authpages[-1].lower()
