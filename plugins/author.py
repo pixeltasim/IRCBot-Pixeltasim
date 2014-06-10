@@ -12,6 +12,7 @@ def author(inp):
 	pagerating = 0
 	author = "None"
 	multimatch = []
+	authorpage = ""
 	for page in pages:
 		for item in pagecache: #these two for loops iterate through every item within each page dictionary, the proper syntax for accessing a specific item is item[page][itemname],
 			try: 
@@ -30,6 +31,10 @@ def author(inp):
 						totalrating = totalrating + pagerating
 						pagetotal = pagetotal + 1 
 					#only if there is no author found yet, so in an ambigious input it only returns one author
+				else:
+					if "author" in item[page]["tags"]:
+						if author == item[page]["created_by"]:
+							authorpage = "http://wanderers-library.wikidot.com/"+item[page]["fullname"] +" - "
 			except KeyError: #must do error handling for code to be valid, iterates through incorrect keys multiple times, do not print things in the except clause, slows down program immensely 
 				pass
 	for page in pages: #this loop checks to see if multiple authors match input 
@@ -48,4 +53,4 @@ def author(inp):
 		avgrating = totalrating/pagetotal
 	if not authpages: #if no author pages are added 
 		return "Author not found."
-	return "nonick::"+ author +" has written " + str(pagetotal) + " pages. They have " + str(totalrating)+ " net upvotes with an average rating of " + str(avgrating) + ". Their most recent article is " + pagetitle + "(Rating:" + str(pagerating) + ")- http://wanderers-library.wikidot.com/" + authpages[-1].lower()
+	return "nonick::"+ authorpage+""+author +" has written " + str(pagetotal) + " pages. They have " + str(totalrating)+ " net upvotes with an average rating of " + str(avgrating) + ". Their most recent article is " + pagetitle + "(Rating:" + str(pagerating) + ")"#+"- http://wanderers-library.wikidot.com/" + authpages[-1].lower()
