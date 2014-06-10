@@ -11,27 +11,38 @@ def author(inp):
 	pagetotal = 0
 	pagerating = 0
 	author = "None"
+	multimatch = []
 	for page in pages:
 		for item in pagecache: #these two for loops iterate through every item within each page dictionary, the proper syntax for accessing a specific item is item[page][itemname],
 			try: 
 				if "entry" in item[page]["tags"]: #makes sure only articles are counted
-					if author != "None":
-						if author == item[page]["created_by"]:
-							authpages.append(page)
-							pagetitle = item[page]["title"]
-							pagerating = item[page]["rating"]
-							totalrating = totalrating + pagerating
-							pagetotal = pagetotal + 1 
-					else: #only if there is no author found yet, so in an ambigious input it only returns one author
-						if inp.lower() in item[page]["created_by"].lower(): #this just matches the author with the first author match
-							author = item[page]["created_by"]
-							authpages.append(page)
-							pagetitle = item[page]["title"]
-							pagerating = item[page]["rating"]
-							totalrating = totalrating + pagerating
-							pagetotal = pagetotal + 1 #all lines above provide page data, math is pretty easy and self-explanatory
+					if inp.lower() in item[page]["created_by"].lower() and author == "None": #this just matches the author with the first author match
+						author = item[page]["created_by"]
+						authpages.append(page)
+						pagetitle = item[page]["title"]
+						pagerating = item[page]["rating"]
+						totalrating = totalrating + pagerating
+						pagetotal = pagetotal + 1 #all lines above provide page data, math is pretty easy and self-explanatory
+					if author == item[page]["created_by"]:
+						authpages.append(page)
+						pagetitle = item[page]["title"]
+						pagerating = item[page]["rating"]
+						totalrating = totalrating + pagerating
+						pagetotal = pagetotal + 1 
+					#only if there is no author found yet, so in an ambigious input it only returns one author
 			except KeyError: #must do error handling for code to be valid, iterates through incorrect keys multiple times, do not print things in the except clause, slows down program immensely 
 				pass
+	for page in pages: #this loop checks to see if multiple authors match input 
+		for item in pagecache:
+			try:
+				if "entry" in item[page]["tags"]:
+					if inp.lower() in item[page]["created_by"].lower():
+						multimatch.append(item[page]["created_by"])
+			except KeyError:
+				pass
+	for authors in multimatch: #checks to see if multiple authors found 
+		if authors != author:
+			return "There are "+ str(len(multimatch)) + " authors matching you query. Please be more specifc. " 
 	avgrating = 0
 	if pagetotal is not 0: #just so no division by zero
 		avgrating = totalrating/pagetotal
