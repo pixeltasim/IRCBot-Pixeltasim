@@ -37,4 +37,4 @@ def author(inp):
 		avgrating = totalrating/pagetotal
 	if not authpages: #if no author pages are added 
 		return "Author not found."
-	return "nonick::"+ author +" has written " + str(pagetotal) + " pages. They have " + str(totalrating)+ " net upvotes. With an average rating of " + str(avgrating) + ". Their most recent article is " + pagetitle + "(Rating:" + str(pagerating) + ")- http://wanderers-library.wikidot.com/" + authpages[-1].lower()
+	return "nonick::"+ author +" has written " + str(pagetotal) + " pages. They have " + str(totalrating)+ " net upvotes with an average rating of " + str(avgrating) + ". Their most recent article is " + pagetitle + "(Rating:" + str(pagerating) + ")- http://wanderers-library.wikidot.com/" + authpages[-1].lower()
