@@ -5,7 +5,7 @@ import time,threading
 
 @hook.command
 def scp(inp): #this is for WL use, easily adaptable to SCP
-	".tale <Article Name> -- Will return first page containing exact match to Article Name"
+	".scp <Article #> -- Will return exact match of 'SCP-Article#'"
 	api = wikidotapi.connection() #creates API connection
 	api.Site = "scp-wiki"
 	pages = api.refresh_pages() #refresh page list provided by the API, is only a list of strings

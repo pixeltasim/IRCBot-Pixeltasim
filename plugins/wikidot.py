@@ -6,6 +6,8 @@ import time,threading
 @hook.command
 def tale(inp): #this is for WL use, easily adaptable to SCP
 	".tale <Article Name> -- Will return first page containing exact match to Article Name"
+	if firstrefresh == 0: #make sure the cache actually exists
+		return "Cache has not yet updated, please wait a minute and search again."
 	api = wikidotapi.connection() #creates API connection
 	api.Site = "wanderers-library"
 	pages = api.refresh_pages() #refresh page list provided by the API, is only a list of strings
