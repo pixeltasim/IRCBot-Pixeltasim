@@ -5,6 +5,7 @@ from util import hook
 def author(inp):
 	".author <Author Name> -- Will return details regarding the author"
 	api = wikidotapi.connection()
+	api.Site = "wanderers-library"
 	pages = api.refresh_pages()
 	authpages = []
 	totalrating = 0
